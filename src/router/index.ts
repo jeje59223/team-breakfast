@@ -1,8 +1,8 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '@/views/HomeView.vue'
-import TeamBreakfastView from '@/views/TeamBreakfastView.vue'
-import AccountView from '@/views/AccountView.vue'
-import PodiumView from '@/views/PodiumView.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import HomeView from '@/views/HomeView.vue';
+import TeamBreakfastView from '@/views/TeamBreakfastView.vue';
+import AccountView from '@/views/AccountView.vue';
+import PodiumView from '@/views/PodiumView.vue';
 
 
 const router = createRouter({
@@ -11,24 +11,24 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView,
+      component: HomeView
     },
     {
-  path: '/team-breakfast',
-    name: 'breakfast',
-  component: TeamBreakfastView
+      path: '/team-breakfast',
+      name: 'breakfast',
+      component: TeamBreakfastView
     },
     {
       path: '/account/:ldap',
-        name: 'account',
+      name: 'account',
       component: AccountView
     },
     {
       path: '/podium',
-        name: 'podium',
+      name: 'podium',
       component: PodiumView
-    },
-  ],
-})
+    }
+  ]
+});
 
-export default router
+export default router;

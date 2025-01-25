@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import Home from '@/components/Home.vue'
+import TeamBreakfastHome from '@/components/TeamBreakfastHome.vue';
 </script>
 
 <template>
   <main>
-    <Home />
+    <TeamBreakfastHome />
   </main>
 </template>

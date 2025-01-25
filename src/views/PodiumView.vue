@@ -1,8 +1,8 @@
 <script setup lang="ts">
 
-import Podium from '@/components/Podium.vue'
+import TeamBreakfastPodium from '@/components/TeamBreakfastPodium.vue';
 </script>
 
 <template>
-  <Podium />
+  <TeamBreakfastPodium />
 </template>
