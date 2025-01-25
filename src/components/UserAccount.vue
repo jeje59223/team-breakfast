@@ -5,10 +5,10 @@
 <template>
   <div>
     <h1>
-      Team Breakfast
+      Account
     </h1>
     <p>
-      Welcome to the Team Breakfast page
+      Welcome to the Account page
     </p>
   </div>
 </template>

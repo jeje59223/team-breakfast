@@ -1,4 +1,4 @@
-import { Role, type User } from '@/models/user.js'
+import { Role, type User } from '@/models/user.js';
 
 export const userMoke: User = {
   ldap: '10009628',
@@ -8,11 +8,11 @@ export const userMoke: User = {
   creationDate: new Date('2023-02-12'),
   login: {
     username: '10009628',
-    password: 'ler123',
+    password: 'ler123'
   },
   lastOrganizedBreakfastDate: null,
   nextOrganizedBreakfastDate: null,
   picture: 'src/assets/jc.jpeg',
   numberOfBreakFastOrganised: 3,
-  roles: [Role.ADMIN],
-}
+  roles: [Role.ADMIN]
+};

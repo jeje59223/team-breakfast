@@ -1,8 +1,8 @@
 <script setup lang="ts">
 
-import Account from '@/components/Account.vue'
+import UserAccount from '@/components/UserAccount.vue';
 </script>
 
 <template>
-  <Account />
+  <UserAccount />
 </template>

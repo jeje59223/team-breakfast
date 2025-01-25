@@ -1,14 +1,26 @@
 <script setup lang="ts">
 const props = defineProps<{
   isSelected: boolean
-}>()
+}>();
 </script>
 
 <template>
-  <div class="French" tnr-id="French">
-    <div :class="props.isSelected ? 'French__flag' : 'French__flag__is-not-selected'" tnr-id="French__selected">
-      <img src="../../../assets/france.png" alt="french" tnr-id="French__flag">
-      <span tnr-id="French__flag_label">FR</span>
+  <div
+    class="French"
+    tnr-id="French"
+  >
+    <div
+      :class="props.isSelected ? 'French__flag' : 'French__flag__is-not-selected'"
+      tnr-id="French__selected"
+    >
+      <img
+        src="../../../assets/france.png"
+        alt="french"
+        tnr-id="French__flag"
+      >
+      <span tnr-id="French__flag_label">
+        FR
+      </span>
     </div>
   </div>
 </template>

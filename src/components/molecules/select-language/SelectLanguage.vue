@@ -1,26 +1,40 @@
 <script setup lang="ts">
-import French from '@/components/atoms/french/French.vue'
-import English from '@/components/atoms/english/English.vue'
-import { ref } from 'vue'
+import French from '@/components/atoms/french/French.vue';
+import English from '@/components/atoms/english/English.vue';
+import { ref } from 'vue';
 
-const isFrenchLanguageSelected = ref<boolean>(true)
-const isEnglishLanguageSelected = ref<boolean>(false)
+const isFrenchLanguageSelected = ref<boolean>(true);
+const isEnglishLanguageSelected = ref<boolean>(false);
 
 const selectFrenchLanguage = () => {
-  isFrenchLanguageSelected.value = true
-  isEnglishLanguageSelected.value = false
-}
+  isFrenchLanguageSelected.value = true;
+  isEnglishLanguageSelected.value = false;
+};
 
 const selectEnglishLanguage = () => {
-  isEnglishLanguageSelected.value = true
-  isFrenchLanguageSelected.value = false
-}
+  isEnglishLanguageSelected.value = true;
+  isFrenchLanguageSelected.value = false;
+};
 </script>
 <template>
-  <div class="select-language-container" tnr-id="SelectLanguageContainer">
-    <div class="select-language-container__choice" tnr-id="select-language-container__choice">
-      <French tnr-id="select-language-container__choice_french" @click="selectFrenchLanguage" :is-selected="isFrenchLanguageSelected" />
-      <English tnr-id="select-language-container__choice_english" @click="selectEnglishLanguage" :is-selected="isEnglishLanguageSelected" />
+  <div
+    class="select-language-container"
+    tnr-id="SelectLanguageContainer"
+  >
+    <div
+      class="select-language-container__choice"
+      tnr-id="select-language-container__choice"
+    >
+      <French
+        tnr-id="select-language-container__choice_french"
+        @click="selectFrenchLanguage"
+        :is-selected="isFrenchLanguageSelected"
+      />
+      <English
+        tnr-id="select-language-container__choice_english"
+        @click="selectEnglishLanguage"
+        :is-selected="isEnglishLanguageSelected"
+      />
     </div>
   </div>
 </template>
