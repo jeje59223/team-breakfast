@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useAuth } from '@/stores/authStore.ts';
+
+const { user } = useAuth();
 
 </script>
 
@@ -10,7 +13,7 @@
     </h1>
     <p class="home__subtitle"
        tnr-id="home-subtitle">
-      Welcome to the home page
+      Welcome {{user.firstname}} to the home page
     </p>
   </div>
 </template>

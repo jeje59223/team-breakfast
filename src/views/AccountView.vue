@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import UserAccount from '@/components/UserAccount.vue';
+import UserAccount from '@/components/template/UserAccount.vue';
 </script>
 
 <template>
