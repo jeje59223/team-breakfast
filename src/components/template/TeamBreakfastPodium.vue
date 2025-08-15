@@ -11,7 +11,8 @@ const { user } = useAuth();
       Podium
     </h1>
     <p>
-      Welcome {{user.firstname}} to the Podium page
+      Welcome {{ user.firstname }} to the Podium page
     </p>
+    <p>This page is coming soon !</p>
   </div>
 </template>

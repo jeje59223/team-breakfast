@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, defineEmits, defineModel } from 'vue';
+import { ref } from 'vue';
 import Snackbar from '@/components/atoms/snackbar/Snackbar.vue';
 
 const emit = defineEmits(['login']);

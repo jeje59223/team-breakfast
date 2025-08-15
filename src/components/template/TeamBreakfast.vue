@@ -9,6 +9,8 @@ import ActionBottomBar from '@/components/atoms/action-bottom-bar/ActionBottomBa
 import router from '@/router/index.js';
 import { useAuth } from '@/stores/authStore.js';
 import { useNotificationStore } from '@/stores/notification.js';
+import Loading from '@/components/atoms/loading/Loading.vue';
+import { AxiosError } from 'axios';
 
 const { getUsers } = useUsersStore();
 const notification = useNotificationStore();
@@ -49,8 +51,18 @@ async function deleteUser() {
 async function addBreakfastDate(ldap: string, date: Date) {
   try {
     await addNextOrganizedBreakfastDate(ldap, date);
-  } catch (error) {
-    console.error('Error adding breakfast date:', error);
+    notification.show('La date du petit déjeuner a été ajoutée avec succès', 'success');
+  } catch (err: unknown) {
+    let message = 'Erreur lors de l\'ajout d\'une date';
+    console.error('Error adding breakfast date:', err?.response);
+    const axiosErr = err as AxiosError | undefined;
+
+    if (axiosErr?.response?.status === 403) {
+      message = 'Vous n\'avez pas la permission de modifier cet utilisateur';
+    } else if (axiosErr?.response?.data?.message) {
+      message = axiosErr.response.data.message;
+    }
+    notification.show(message, 'error');
   } finally {
     await getUsers();
     isOpenDatePicker.value = false;
@@ -88,16 +100,7 @@ const showSnackBar = computed({
 </script>
 
 <template>
-  <v-overlay
-    v-model="isLoading"
-    class="connexion__is-loading"
-  >
-    <v-progress-circular
-      :size="150"
-      color="#287F8C"
-      indeterminate
-    />
-  </v-overlay>
+  <Loading v-model="isLoading" />
   <div
     v-if="!isLoading"
     class="team-breakfast">
@@ -147,13 +150,6 @@ const showSnackBar = computed({
   <Snackbar
     v-model="openDeleteSuccessMessage"
     text="L'utilisateur a été supprimé avec succès"
-    icon="mdi-check-circle-outline"
-    color="success"
-    :duration="3000"
-  />
-  <Snackbar
-    v-model="isOpenAddNextBreakfastDateDialog"
-    text="La date du petit déjeuner a été ajoutée avec succès"
     icon="mdi-check-circle-outline"
     color="success"
     :duration="3000"

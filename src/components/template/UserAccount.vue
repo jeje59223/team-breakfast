@@ -1,136 +1,128 @@
 <script setup lang="ts">
-import { useAuth } from '@/stores/authStore.ts';
-import { computed, ref } from 'vue';
-import ActionBottomBar from '@/components/atoms/action-bottom-bar/ActionBottomBar.vue';
+import { computed, onMounted } from 'vue';
+import { useUsersStore } from '@/stores/user.store.js';
+import { useRoute } from 'vue-router';
+import { storeToRefs } from 'pinia';
+import Loading from '@/components/atoms/loading/Loading.vue';
+import Account from '@/components/template/Account.vue';
+import { useAuth } from '@/stores/authStore.js';
 
-const { user } = useAuth();
+const route = useRoute();
+const { getUserByLdap } = useUsersStore();
+const { userByLdap, isLoadingUserByLdap } = storeToRefs(useUsersStore());
+const ldap = route.params.ldap as string;
 
+const { user, isAdmin } = useAuth();
 const userConnected = computed(() => user.value);
 
-const selectedFile = ref<File | null>(null);
-
-const onFileChange = (file: File | File[] | null) => {
-  if (file instanceof File) {
-    selectedFile.value = file;
-    const reader = new FileReader();
-    reader.onload = () => {
-      if (typeof reader.result === 'string') {
-        // On ne met QUE la string base64 dans l'objet user
-        user.value.picture = reader.result;
-      }
-    };
-    reader.readAsDataURL(file);
-  }
-};
+onMounted(async () => {
+  await getUserByLdap(ldap);
+});
 </script>
 
 <template>
-  <div class="user-account">
-    <h1 class="mb-8 user-account__title">
-      Account page
-    </h1>
-    <div class="user-account__content">
-      <img
-        v-if="user.picture"
-        class="user-account__content-picture"
-        :src="user.picture"
-      />
-      <div
-        v-else
-        class="user-account__content-no-picture">
-        {{ user.firstname.charAt(0).toUpperCase() }}
-      </div>
-      <v-card class="user-account__content-form">
-        <div class="mb-8 user-account__content-form-firstname-lastname">
-          <v-text-field
-            v-model="userConnected.firstname"
-            class="w-50"
-            label="First name"
-            variant="outlined"
-            color="#007f8c"
-            :hide-details="true"
-          />
-          <v-text-field
-            v-model="userConnected.lastname"
-            class="w-50"
-            label="Last name"
-            variant="outlined"
-            color="#007f8c"
-            :hide-details="true"
-          />
-        </div>
-        <v-text-field
-          v-model="userConnected.email"
-          label="First name"
-          class="mb-8"
-          variant="outlined"
-          color="#007f8c"
-          :hide-details="true"
-        />
-        <v-file-input
-          v-model="selectedFile"
-          label="Picture"
-          variant="outlined"
-          color="#007f8c"
-          :hide-details="true"
-          clearable
-          @update:modelValue="onFileChange"
-        />
-      </v-card >
-    </div>
-  </div>
-  <ActionBottomBar>
-    <v-btn
-      color="#007f8c"
-      variant="elevated"
-      @click="console.log('Save changes')"
-    >
-      Sauvegarder
-    </v-btn>
-  </ActionBottomBar>
+  <Loading v-model="isLoadingUserByLdap" />
+  <Account
+    :user="userByLdap"
+    :is-display-edit-account-button="userConnected?.ldap === userByLdap?.ldap || isAdmin"
+  />
 </template>
 <style lang="scss">
 .user-account {
-  width: 60%;
-  &__title {
-    text-align: center;
-  }
-  &__content {
+  padding: 10px;
+  min-width: 500px;
+  &__header {
     display: flex;
     align-items: center;
-    gap: 40px;
-    &-picture, &-no-picture {
-      width: 30vh;
-      height: 30vh;
-      border-radius: 50%;
-      max-width: 200px;
-      max-height: 200px;
-      min-width: 100px;
-      min-height: 100px;
-    }
+    gap: 20px;
+    margin-bottom: 10px;
+    min-height: 96px;
+
     &-picture {
-      img {
-        border-radius: 50%;
-      }
-    }
-    &-no-picture {
-      background: #007f8c;
       display: flex;
-      justify-content: center;
-      align-items: center;
-      color: #f8f8f8;
-      font-size: 100px;
-    }
-    &-form {
-      width: auto;
-      min-width: 70%;
-      padding: 40px;
-      &-firstname-lastname {
-        display: flex;
-        justify-content: space-between;
-        gap: 20px;
+      max-width: 96px;
+
+      &-avatar {
+        width: 100%;
+        object-fit: cover;
+        border-radius: 4px;
+      }
+
+      &-no-avatar {
+        min-width: 96px;
+        min-height: 96px;
+        width: 100%;
+        height: 100%;
+        border-radius: 4px;
+        font-size: 30px;
+        object-fit: cover;
       }
     }
+
+    &-email, &-ldap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+
+    &-roles {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      gap: 10px;
+    }
+
+    &-breakfasts {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 10px;
+
+      &-title {
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+
+      ul {
+        padding-left: 0;
+        margin-left: 40px;
+
+        li {
+          color: #007f8c;
+          font-weight: bold;
+        }
+      }
+
+      &-no-dates {
+        color: #007f8c;
+        font-style: italic;
+      }
+
+      &-next-date {
+        &-no-date {
+          color: #007f8c;
+          font-style: italic;
+        }
+      }
+    }
+  }
+
+  span {
+    color: #007f8c;
+    font-weight: bold;
+  }
+
+  &__footer {
+    padding: 10px 10px 0 10px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #767676;
   }
 }
 </style>

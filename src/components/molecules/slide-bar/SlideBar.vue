@@ -78,12 +78,12 @@ const getFirstLetterOfFirstname = computed(() => user.value?.firstname.charAt(0)
           <v-divider class="mb-12" />
           <v-list-item
             prepend-icon="mdi-account"
-            :active="route.name === 'account'"
+            :active="route.name === 'my-account'"
             title="Mon compte"
-            value="account"
+            value="my-account"
             color="#007f8c"
             tnr-id="slide-bar-account"
-            @click="router.push({ name: 'account', params: { ldap: user?.ldap } })"
+            @click="router.push({ name: 'my-account' })"
           />
           <v-list-item
             prepend-icon="mdi-food-croissant"

@@ -5,8 +5,10 @@ import type { User } from '@/models/user.ts';
 
 export const useUsersStore = defineStore('users', () => {
   const users = ref<User[]>([]);
+  const userByLdap = ref<User | null>();
   const csrfToken = ref<string | null>(null);
   const isLoading = ref<boolean>(false);
+  const isLoadingUserByLdap = ref<boolean>(false);
 
   const getCsrfToken = async () => {
     try {
@@ -30,6 +32,25 @@ export const useUsersStore = defineStore('users', () => {
     }
   };
 
+  const getUserByLdap = async (ldap: string): Promise<void> => {
+    try {
+      isLoadingUserByLdap.value = true;
+      const response = await axios.get(`http://localhost:8080/users/ldap/${ldap}`, { withCredentials: true });
+      if (response.data) {
+        userByLdap.value = response.data;  // <- ici, pas .document
+      } else {
+        userByLdap.value = null;
+        console.warn(`Aucun utilisateur trouvé pour LDAP ${ldap}`);
+      }
+
+    } catch (err: unknown) {
+      console.error(`Error retrieving user by ldap: ${err}`);
+      userByLdap.value = null;
+    } finally {
+      isLoadingUserByLdap.value = false;
+    }
+  };
+
   const createUser = async (user: User) => {
     try {
       await getCsrfToken();
@@ -41,6 +62,22 @@ export const useUsersStore = defineStore('users', () => {
       });
     } catch (err: unknown) {
       throw new Error(`Create user error: ${err}`);
+    }
+  };
+
+  const updateUser = async (ldap: string, updateData: Partial<User>) => {
+    try {
+      await getCsrfToken();
+      await axios.put(
+        'http://localhost:8080/users/update-user',
+        { ldap, updateData },
+        {
+          headers: { 'X-CSRF-Token': csrfToken.value },
+          withCredentials: true
+        }
+      );
+    } catch (err) {
+      throw new Error(`Update user error: ${err}`);
     }
   };
 
@@ -73,7 +110,7 @@ export const useUsersStore = defineStore('users', () => {
         }
       );
     } catch (err: unknown) {
-      throw new Error(`Add next organized breakfast date error: ${err}`);
+      throw err;
     }
   };
 
@@ -115,12 +152,16 @@ export const useUsersStore = defineStore('users', () => {
 
   return {
     getUsers,
+    updateUser,
     deleteUserByLdap,
     createUser,
     addNextOrganizedBreakfastDate,
     validateBreakfast,
     removeNextOrganizedBreakfastDate,
+    getUserByLdap,
     users,
-    isLoading
+    userByLdap,
+    isLoading,
+    isLoadingUserByLdap
   };
 });

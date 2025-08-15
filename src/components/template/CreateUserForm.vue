@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 import { User } from '@/models/user.js';
-import { defineModel, ref } from 'vue';
+import { ref } from 'vue';
 import ActionBottomBar from '@/components/atoms/action-bottom-bar/ActionBottomBar.vue';
 
 const emit = defineEmits<{

@@ -1,7 +1,4 @@
 <script setup lang="ts">
-
-import { defineModel } from 'vue';
-
 defineProps<{
   title: string;
   text: string;

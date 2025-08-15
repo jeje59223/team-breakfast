@@ -71,11 +71,13 @@ export function useAuth() {
 
   const isAuthenticated = computed(() => !!user.value);
   const isAdmin = computed(() => user.value?.roles?.includes(Role.ADMIN));
+  const isLoading = computed(() => !user.value);
 
   return {
     user,
     isAuthenticated,
     isAdmin,
+    isLoading,
     checkAuth,
     login,
     logout

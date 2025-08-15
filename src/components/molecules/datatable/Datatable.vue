@@ -4,6 +4,10 @@ import { User } from '@/models/user.ts';
 import dayjs from 'dayjs';
 import { useAuth } from '@/stores/authStore.js';
 import DatePicker from '@/components/organisms/date-picker/DatePicker.vue';
+import NoAvatar from '@/components/atoms/no-avatar/NoAvatar.vue';
+import { getInitials } from '@/utils/get-initials.utils.js';
+import noImage from '@/assets/no-image.jpg';
+import router from '@/router/index.ts';
 
 const props = defineProps<{
   users: User[]
@@ -11,6 +15,7 @@ const props = defineProps<{
 }>();
 
 const { isAdmin, user } = useAuth();
+const defaultPicture = noImage as string;
 
 const emit = defineEmits<{
   (e: 'update:isOpenDatePicker', value: boolean): void;
@@ -176,9 +181,11 @@ const openDatePicker = (ldap: string): void => {
         height="40"
         class="datatable-user-picture"
         :alt="`Avatar de ${item.firstname}`"
+        @error="item.picture = defaultPicture"
       />
       <div v-else>
-        {{item.firstname}}
+        <NoAvatar class="datatable-user-picture__no-avatar"
+                  :initial="getInitials(item)" />
       </div>
     </template>
     <template v-slot:[`item.lastname`]="{ item }">
@@ -264,14 +271,14 @@ const openDatePicker = (ldap: string): void => {
             />
           </template>
         </v-tooltip>
-        <v-tooltip text="Modifier le compte">
+        <v-tooltip text="Voir le compte">
           <template v-slot:activator="{ props }">
             <v-btn
               v-bind="props"
               size="x-small"
-              icon="mdi-pencil"
-              color="#333333"
-              @click="console.log('update account', item.ldap)"
+              icon="mdi-eye"
+              color="#0b96cc"
+              @click="router.push({ name: 'account', params: { ldap: item?.ldap } })"
             />
           </template>
         </v-tooltip>
@@ -304,6 +311,12 @@ const openDatePicker = (ldap: string): void => {
   align-items: center;
   object-fit: contain;
   background: #007f8c;
+
+  &__no-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
 }
 
 .arrow-down, .arrow-up {
