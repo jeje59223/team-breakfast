@@ -1,26 +1,20 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router';
-import { computed, ref } from 'vue';
-import { userMoke } from '@/tests/data/user.ts';
-import type { User } from '@/models/user.ts';
+import { computed } from 'vue';
+import { useAuth } from '@/stores/authStore.js';
 
 const router = useRouter();
 const route = useRoute();
-const userConnected = ref<User>(userMoke);
+const { user, logout } = useAuth();
 
 const getFullName = () => {
-  if (userConnected.value) {
-    return `${userConnected?.value?.firstname} ${userConnected?.value?.lastname}`;
+  if (user.value) {
+    return `${user?.value?.firstname} ${user?.value?.lastname}`;
   }
   return '';
 };
 
-const disconnected = () => {
-  // eslint-disable-next-line no-console
-  console.log('disconnected');
-};
-
-const getFirstLetterOfFirstname = computed(() => userConnected.value?.firstname.charAt(0).toUpperCase());
+const getFirstLetterOfFirstname = computed(() => user.value?.firstname.charAt(0).toUpperCase());
 </script>
 
 <template>
@@ -37,8 +31,8 @@ const getFirstLetterOfFirstname = computed(() => userConnected.value?.firstname.
         <v-list :nav="true">
           <div>
             <v-list-item
-              v-if="userConnected && userConnected?.picture"
-              :prepend-avatar="userConnected?.picture"
+              v-if="user && user?.picture"
+              :prepend-avatar="user?.picture"
               :title="getFullName()"
               :nav="true"
               tnr-id="slide-bar-user-fullname"
@@ -61,7 +55,7 @@ const getFirstLetterOfFirstname = computed(() => userConnected.value?.firstname.
             </v-list-item>
           </div>
           <div
-            v-if="!userConnected"
+            v-if="!user"
             tnr-id="slideBar__not-connected"
           >
             <v-list-item tnr-id="SlideBar__no-connected-user" />
@@ -84,12 +78,12 @@ const getFirstLetterOfFirstname = computed(() => userConnected.value?.firstname.
           <v-divider class="mb-12" />
           <v-list-item
             prepend-icon="mdi-account"
-            :active="route.name === 'account'"
+            :active="route.name === 'my-account'"
             title="Mon compte"
-            value="account"
+            value="my-account"
             color="#007f8c"
             tnr-id="slide-bar-account"
-            @click="router.push({ name: 'account', params: { ldap: userConnected?.ldap } })"
+            @click="router.push({ name: 'my-account' })"
           />
           <v-list-item
             prepend-icon="mdi-food-croissant"
@@ -118,7 +112,7 @@ const getFirstLetterOfFirstname = computed(() => userConnected.value?.firstname.
                 prepend-icon="mdi-logout-variant"
                 title="Se déconnecter"
                 value="logout"
-                @click="disconnected"
+                @click="logout"
               />
             </v-list>
           </div>

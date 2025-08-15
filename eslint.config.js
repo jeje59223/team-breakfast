@@ -36,7 +36,7 @@ export default [
       'no-console': ['error', { allow: ['warn', 'error'] }],
       'indent': ['error', 2],
       'comma-dangle': ['error', 'never'],
-      'max-len': ['error', { code: 120 }],
+      'max-len': ['error', { code: 140 }],
       'semi': ['error', 'always'],
       'array-bracket-spacing': ['error', 'never'],
       'quotes': ['error', 'single'],

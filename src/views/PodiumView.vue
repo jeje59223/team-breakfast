@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import TeamBreakfastPodium from '@/components/TeamBreakfastPodium.vue';
+import TeamBreakfastPodium from '@/components/template/TeamBreakfastPodium.vue';
 </script>
 
 <template>

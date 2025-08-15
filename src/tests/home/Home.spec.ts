@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { mount } from '@vue/test-utils';
-import TeamBreakfastHome from '@/components/TeamBreakfastHome.vue';
+import TeamBreakfastHome from '@/components/template/TeamBreakfastHome.vue';
 
 describe('TeamBreakfastHome', () => {
   const wrapper = mount(TeamBreakfastHome);

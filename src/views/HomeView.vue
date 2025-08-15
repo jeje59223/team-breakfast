@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import TeamBreakfastHome from '@/components/TeamBreakfastHome.vue';
+import TeamBreakfastHome from '@/components/template/TeamBreakfastHome.vue';
 </script>
 
 <template>

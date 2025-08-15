@@ -4,9 +4,10 @@ export interface User {
   lastname: string
   picture?: string
   email: string
+  datesOfOrganizedBreakfasts?: string[]
   lastOrganizedBreakfastDate?: Date | null
   nextOrganizedBreakfastDate: string | null
-  numberOfBreakFastOrganised: number
+  numberOfBreakFastOrganised?: number
   roles?: Role[]
   creationDate?: Date
   login: {
